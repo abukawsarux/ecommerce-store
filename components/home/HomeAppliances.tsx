@@ -2,11 +2,13 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
-
-import "swiper/css";
-import "swiper/css/navigation";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const tabs = [
   "Mixer Grinder & Blender",
@@ -63,16 +65,6 @@ const HomeAppliances = () => {
               Appliances
             </span>
           </h2>
-
-          {/* Navigation buttons (UI only) */}
-          <div className="flex items-center gap-2">
-            <button className="w-9 h-9 rounded-full border flex items-center justify-center hover:bg-gray-100 transition">
-              ‹
-            </button>
-            <button className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center hover:bg-black/90 transition">
-              ›
-            </button>
-          </div>
         </div>
 
         {/* Tabs */}
@@ -93,46 +85,58 @@ const HomeAppliances = () => {
           ))}
         </div>
 
-        {/* Products */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-          {products.map((product) => (
-            <div
-              key={product.title}
-              className="bg-white rounded-2xl border p-4 hover:shadow-lg transition group"
-            >
-              {/* Image */}
-              <div className="relative w-full h-44 mb-4">
-                <Image
-                  src={product.image}
-                  alt={product.title}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-
-              {/* Title */}
-              <h3 className="text-sm font-semibold mb-2 group-hover:text-primary transition">
-                {product.title}
-              </h3>
-
-              {/* Price */}
-              <div className="space-y-1">
-                <p className="font-bold">{product.price}</p>
-
-                {product.oldPrice && (
-                  <div className="flex items-center gap-2 text-xs">
-                    <span className="line-through text-gray-400">
-                      {product.oldPrice}
-                    </span>
-                    <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
-                      {product.off}
-                    </span>
+        {/* Products Carousel */}
+        <Carousel
+          opts={{
+            align: "start",
+            loop: false,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-2 md:-ml-4">
+            {products.map((product) => (
+              <CarouselItem
+                key={product.title}
+                className="pl-2 md:pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5"
+              >
+                <div className="bg-white rounded-2xl border p-4 hover:shadow-lg transition group">
+                  {/* Image */}
+                  <div className="relative w-full h-44 mb-4">
+                    <Image
+                      src={product.image}
+                      alt={product.title}
+                      fill
+                      className="object-contain"
+                    />
                   </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+
+                  {/* Title */}
+                  <h3 className="text-sm font-semibold mb-2 group-hover:text-primary transition">
+                    {product.title}
+                  </h3>
+
+                  {/* Price */}
+                  <div className="space-y-1">
+                    <p className="font-bold">{product.price}</p>
+
+                    {product.oldPrice && (
+                      <div className="flex items-center gap-2 text-xs">
+                        <span className="line-through text-gray-400">
+                          {product.oldPrice}
+                        </span>
+                        <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
+                          {product.off}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="-left-4" />
+          <CarouselNext className="-right-4" />
+        </Carousel>
       </div>
     </section>
   );
