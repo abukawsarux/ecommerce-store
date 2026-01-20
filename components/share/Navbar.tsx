@@ -67,7 +67,9 @@ const Navbar = () => {
       <div className="bg-black text-white">
         <div className="container flex items-center gap-6 py-4">
           <div className="text-xl font-bold whitespace-nowrap">
-            <span className="text-orange-500">gadgets</span>
+            <Link href="/" className="text-orange-500">
+              gadgets
+            </Link>
           </div>
 
           <div className="flex-1">
