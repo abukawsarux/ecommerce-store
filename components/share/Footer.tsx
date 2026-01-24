@@ -43,7 +43,7 @@ const Footer = () => {
             <div className="flex items-start gap-3">
               <Mail size={18} className="mt-1 text-primary" />
               <div>
-                <p className="text-sm font-semibold text-white">
+                <p className="text-sm md:text-base font-semibold text-white">
                   Email Address
                 </p>
                 <p className="text-sm">contact@applegadgetsbd.com</p>
