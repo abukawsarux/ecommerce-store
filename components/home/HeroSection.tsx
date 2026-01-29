@@ -2,7 +2,9 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Autoplay from "embla-carousel-autoplay";
+import { motion, AnimatePresence } from "framer-motion";
 
 import {
   Carousel,
@@ -23,14 +25,39 @@ const heroSlides = [
   "/images/hero/iPhone-17-Series-5333.webp",
 ];
 
+// Right side banner data
+const rightBanners = [
+  {
+    id: 1,
+    image: "/images/hero/Galaxy-Watch-7-3867.webp",
+    alt: "Galaxy Watch",
+    link: "/products/galaxy-watch",
+  },
+  {
+    id: 2,
+    image: "/images/hero/Printer-Web-Slider-5816.webp",
+    alt: "iPhone 17",
+    link: "/products/iphone-17",
+  },
+  {
+    id: 3,
+    image: "/images/hero/starlink-slider-7875.webp",
+    alt: "Smart Device",
+    link: "/products/smart-device",
+  },
+];
+
 const HeroSection = () => {
   const autoplay = React.useRef(
-    Autoplay({ delay: 4000, stopOnInteraction: false })
+    Autoplay({ delay: 4000, stopOnInteraction: false }),
   );
 
   const [api, setApi] = React.useState<CarouselApi | null>(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [snapCount, setSnapCount] = React.useState(0);
+
+  // Right banner animation state
+  const [currentBannerIndex, setCurrentBannerIndex] = React.useState(0);
 
   React.useEffect(() => {
     if (!api) return;
@@ -42,6 +69,15 @@ const HeroSection = () => {
       setSelectedIndex(api.selectedScrollSnap());
     });
   }, [api]);
+
+  // Auto-rotate right banners
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBannerIndex((prev) => (prev + 1) % rightBanners.length);
+    }, 3000); // Change every 4 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section className="bg-white">
@@ -81,7 +117,7 @@ const HeroSection = () => {
                       "h-2.5 w-2.5 rounded-full transition-all",
                       selectedIndex === index
                         ? "bg-primary w-6"
-                        : "bg-muted-foreground/40 hover:bg-muted-foreground/70"
+                        : "bg-muted-foreground/40 hover:bg-muted-foreground/70",
                     )}
                     aria-label={`Go to slide ${index + 1}`}
                   />
@@ -92,6 +128,7 @@ const HeroSection = () => {
 
           {/* -------- Right Side Banners -------- */}
           <div className="lg:col-span-4 flex flex-col gap-4">
+            {/* Top Static Banner */}
             <div className="relative rounded-2xl overflow-hidden h-1/2">
               <Image
                 src="/images/hero/Galaxy-Watch-7-3867.webp"
@@ -102,14 +139,33 @@ const HeroSection = () => {
               />
             </div>
 
+            {/* Bottom Animated Banner */}
             <div className="relative rounded-2xl overflow-hidden h-1/2">
-              <Image
-                src="/images/hero/Galaxy-Watch-7-3867.webp"
-                alt="Induction Cooker"
-                width={400}
-                height={240}
-                className="w-full h-full object-cover"
-              />
+              <AnimatePresence initial={false}>
+                <motion.div
+                  key={rightBanners[currentBannerIndex].id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    duration: 1,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute inset-0"
+                >
+                  <Link
+                    href={rightBanners[currentBannerIndex].link}
+                    className="block w-full h-full"
+                  >
+                    <Image
+                      src={rightBanners[currentBannerIndex].image}
+                      alt={rightBanners[currentBannerIndex].alt}
+                      fill
+                      className="object-cover"
+                    />
+                  </Link>
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
         </div>
