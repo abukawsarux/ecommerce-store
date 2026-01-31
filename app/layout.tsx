@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 // import { Providers } from "./providers";
 import { Inter } from "next/font/google";
-import Navbar from "@/components/share/Navbar";
-import Footer from "@/components/share/Footer";
+import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
 
 // Inter font setup
 const inter = Inter({
